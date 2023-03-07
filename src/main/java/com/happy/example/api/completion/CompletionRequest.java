@@ -1,4 +1,4 @@
-package com.happy.example.completion;
+package com.happy.example.api.completion;
 
 import java.util.List;
 import java.util.Map;
