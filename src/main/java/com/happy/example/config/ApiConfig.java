@@ -9,6 +9,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.support.WebClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
+import java.time.Duration;
+
 @Configuration
 public class ApiConfig {
 
@@ -16,8 +18,8 @@ public class ApiConfig {
     public TestClient testClient() {
         WebClient client = WebClient.builder().baseUrl("https://www.baidu.com").build();
         HttpServiceProxyFactory factory = HttpServiceProxyFactory
-            .builder(WebClientAdapter.forClient(client))
-            .build();
+                .builder(WebClientAdapter.forClient(client))
+                .build();
         return factory.createClient(TestClient.class);
     }
 
@@ -27,12 +29,13 @@ public class ApiConfig {
     @Bean
     public OpenAiClient openAiClient() {
         WebClient client = WebClient
-            .builder()
-            .defaultHeader("Authorization", "Bearer "+ apiToken)
-            .build();
+                .builder()
+                .defaultHeader("Authorization", "Bearer " + apiToken)
+                .build();
         HttpServiceProxyFactory factory = HttpServiceProxyFactory
-            .builder(WebClientAdapter.forClient(client))
-            .build();
+                .builder(WebClientAdapter.forClient(client))
+                .blockTimeout(Duration.ofSeconds(120))
+                .build();
         return factory.createClient(OpenAiClient.class);
     }
 }
